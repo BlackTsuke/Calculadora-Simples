@@ -1,40 +1,39 @@
 export default class Calculadora {
-  constructor(campoInputResultado, buttons) {
-    this.campoInputResultado = document.querySelector(campoInputResultado)
+  constructor(campo, buttons) {
+    this.campo = document.querySelector(campo)
     this.buttons = document.querySelectorAll(buttons)
   }
-  adicionarEventosButtons() {
-    this.buttons.forEach((event) => {
-      event.addEventListener('click', () => {
-        const valorBotao = event.textContent
+  addEventos() {
+    this.buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const valorBotao = btn.textContent
         if (valorBotao === "C") {
-          this.limparCampo();
-        } else if (valorBotao === "=") {
-          this.calcularResultado();
+          this.limparResultado()
+        } else if (valorBotao === '=') {
+          this.calcularResultado()
         } else {
-          this.adicionarValor(valorBotao);
+          this.addResultado(valorBotao)
         }
       })
     })
   }
-  limparCampo() {
-    this.campoInputResultado.value = ''
+
+  limparResultado() {
+    this.campo.value = ''
   }
   calcularResultado() {
-    this.campoInputResultado.value = eval(this.campoInputResultado.value)
+    try {
+      this.campo.value = eval(this.campo.value)
+    } catch (e) {
+      console.log(e)
+      this.campo.value = ''
+    }
   }
-  adicionarValor(valorBotao) {
-    this.campoInputResultado.value += valorBotao;
-  }
-  bindEvents() {
-    this.adicionarValor = this.adicionarValor.bind(this)
-    this.limparCampo = this.limparCampo.bind(this)
-    this.calcularResultado = this.calcularResultado.bind(this)
-    this.adicionarEventosButtons = this.adicionarEventosButtons.bind(this)
+  addResultado(valorBotao) {
+    this.campo.value += valorBotao
   }
   init() {
-    this.bindEvents()
-    this.adicionarEventosButtons()
+    this.addEventos()
     return this
   }
 }
